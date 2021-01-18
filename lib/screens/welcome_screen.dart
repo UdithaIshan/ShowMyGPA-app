@@ -47,7 +47,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'register_screen');
+                        },
                         color: Colors.yellow,
                         height: MediaQuery.of(context).size.height*0.09,
                         child: Text(
