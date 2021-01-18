@@ -1,8 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/screens/register.dart';
 import 'package:gpa_analyzer/screens/welcome_screen.dart';
 
-void main() => runApp(GPAAnalyzer());
+import 'screens/home_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(GPAAnalyzer());
+}
 
 class GPAAnalyzer extends StatelessWidget {
   @override
@@ -14,10 +21,10 @@ class GPAAnalyzer extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
-        'welcome_screen' : (context) => WelcomeScreen(),
-        'register_screen' : (context) => Register(),
-        // 'login_screen' : (context) => Login(),
-        // 'home_screen' : (context) => Home(),
+        WelcomeScreen.id : (context) => WelcomeScreen(),
+        Register.id : (context) => Register(),
+        // Login.id : (context) => Login(),
+        Home.id : (context) => Home(),
       },
     );
   }
