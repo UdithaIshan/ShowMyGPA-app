@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "969302458118",
+    "firebase_url": "https://gpa-analyzer-default-rtdb.firebaseio.com",
+    "project_id": "gpa-analyzer",
+    "storage_bucket": "gpa-analyzer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969302458118:android:a8cbbad9e9e83cbffb6887",
+        "android_client_info": {
+          "package_name": "com.devstream.gpa_analyzer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969302458118-a60lpgnoq0suq8i841vj3093katsnvfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0pwzUmFLAXSkgIGDVi_CoByJrGzmJ3BU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969302458118-a60lpgnoq0suq8i841vj3093katsnvfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
