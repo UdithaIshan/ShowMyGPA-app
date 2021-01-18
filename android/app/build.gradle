@@ -22,7 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
@@ -35,6 +35,7 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -53,4 +54,5 @@ flutter {
 dependencies {
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.3.0')
+    implementation 'com.android.support:multidex:2.0.1'
 }
