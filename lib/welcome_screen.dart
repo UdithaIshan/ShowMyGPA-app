@@ -131,9 +131,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       MaterialButton(
                         onPressed: () {
-                          if (isBatchSet && isIndexSet) {
-                            Navigator.pushNamed(context, 'home_screen');
-                          }
+                          // if (isBatchSet && isIndexSet) {
+                          //   Navigator.pushNamed(context, 'screen_selector');
+                          // }
+                            Navigator.pushNamed(context, 'screen_selector');
                         },
                         color: Colors.yellow,
                         height: MediaQuery.of(context).size.height * 0.09,
