@@ -6,8 +6,6 @@ import 'package:gpa_analyzer/screens/welcome_screen.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(GPAAnalyzer());
 }
 
@@ -22,7 +20,7 @@ class GPAAnalyzer extends StatelessWidget {
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id : (context) => WelcomeScreen(),
-        Register.id : (context) => Register(),
+        SignIn.id : (context) => SignIn(),
         // Login.id : (context) => Login(),
         Home.id : (context) => Home(),
       },
