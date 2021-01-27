@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gpa_analyzer/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Register extends StatelessWidget {
+class SignIn extends StatelessWidget {
   static const String id = "register_screen";
   String email;
   String index;
   final _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<String> signInWithGoogle() async {
 
+  Future<String> signInWithGoogle() async {
+    final prefs = await SharedPreferences.getInstance();
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
@@ -32,7 +34,7 @@ class Register extends StatelessWidget {
       assert(user.uid == currentUser.uid);
 
       print('signInWithGoogle succeeded: $user');
-
+      print(prefs.getBool('key') ?? prefs.setBool('key', false));
       return '$user';
     }
 
@@ -74,12 +76,13 @@ class Register extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     TextField(
+                      textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
                         value = index;
                       },
                       decoration: InputDecoration(
-                        hintText: "Enter your index number",
+                        hintText: "Your Index Number",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
@@ -92,14 +95,14 @@ class Register extends StatelessWidget {
                       onPressed: () {
                         signInWithGoogle().then((value) {
                           if(value!=null){
-                            Navigator.pushNamed(context, Home.id);
+                            // Navigator.pushNamed(context, Home.id);
                           }
                         });
                       },
                       color: Colors.grey,
                       height: MediaQuery.of(context).size.height * 0.09,
                       child: Text(
-                        "Join",
+                        "Sign-in with Google",
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
