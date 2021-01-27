@@ -1,9 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gpa_analyzer/screens/register.dart';
-import 'package:gpa_analyzer/screens/welcome_screen.dart';
-
-import 'screens/home_screen.dart';
+import 'package:gpa_analyzer/screen_selector.dart';
+import 'package:gpa_analyzer/welcome_screen.dart';
 
 void main() async {
   runApp(GPAAnalyzer());
@@ -20,9 +17,7 @@ class GPAAnalyzer extends StatelessWidget {
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id : (context) => WelcomeScreen(),
-        SignIn.id : (context) => SignIn(),
-        // Login.id : (context) => Login(),
-        Home.id : (context) => Home(),
+        ScreenSelector.id : (context) => ScreenSelector(),
       },
     );
   }
