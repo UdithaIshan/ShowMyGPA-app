@@ -17,8 +17,8 @@ class _ScreenSelectorState extends State<ScreenSelector> {
   List<Widget> _screenContainer = [
     Home(),
     Semester(),
-    Settings(),
     Ranking(),
+    // Settings(),
   ];
 
   void _onItemTapped(int index) {
@@ -30,31 +30,34 @@ class _ScreenSelectorState extends State<ScreenSelector> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-            ],
-            currentIndex: _currentIndex,
-            selectedItemColor: Colors.amber[800],
-            unselectedItemColor: Colors.grey,
-            onTap: _onItemTapped,
-          ),
-          body: _screenContainer[_currentIndex]
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.school_outlined),
+                    label: "GPA"
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.filter_frames_outlined),
+                    label: "Results"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.info_outline_rounded),
+                    label: "More"
+                ),
+                // BottomNavigationBarItem(
+                //     icon: Icon(Icons.home),
+                //     label: "Home"
+                // ),
+              ],
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.amber[800],
+              unselectedItemColor: Colors.grey,
+              onTap: _onItemTapped,
+            ),
+            body: _screenContainer[_currentIndex]
+        ),
       ),
     );
   }
