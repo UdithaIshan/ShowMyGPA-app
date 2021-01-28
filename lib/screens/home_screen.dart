@@ -21,10 +21,10 @@ class _HomeState extends State<Home> {
   }
 
   void getResults() async {
-    final results = await _firestore.collection('/ucsc/batch16/cs/').doc('1800068').get();
+    final results = await _firestore.collection('/ucsc/batch16/cs/').doc('18000681').get();
 
       print(results.data());
-
+      
   }
 
   @override
