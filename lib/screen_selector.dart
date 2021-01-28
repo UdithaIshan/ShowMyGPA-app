@@ -30,31 +30,34 @@ class _ScreenSelectorState extends State<ScreenSelector> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home"
-              ),
-            ],
-            currentIndex: _currentIndex,
-            selectedItemColor: Colors.amber[800],
-            unselectedItemColor: Colors.grey,
-            onTap: _onItemTapped,
-          ),
-          body: _screenContainer[_currentIndex]
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home"
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home"
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home"
+                ),
+              ],
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.amber[800],
+              unselectedItemColor: Colors.grey,
+              onTap: _onItemTapped,
+            ),
+            body: _screenContainer[_currentIndex]
+        ),
       ),
     );
   }

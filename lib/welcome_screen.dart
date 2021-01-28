@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gpa_analyzer/screen_selector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  static const String id = "welcome_screen";
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -110,7 +110,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         onChanged: (value) {
                           _value = value;
                           setUserData().then((val) => {
-                                if (val != null) {val.setInt('batch', value)}
+                                if (val != null)
+                                  {
+                                    val.setString(
+                                        'batch', 'batch\'${value + 16}\'')    //if value = 0; then batch = "batch16"
+                                  }
                               });
                           isBatchSet = true;
                         },
@@ -130,11 +134,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       MaterialButton(
-                        onPressed: () {
-                          // if (isBatchSet && isIndexSet) {
-                          //   Navigator.pushNamed(context, 'screen_selector');
-                          // }
-                            Navigator.pushNamed(context, 'screen_selector');
+                        onPressed: () async {
+                          if (isBatchSet && isIndexSet) {
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('autologin', true);
+                            print('autologin true');
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
+                          }
+
+                          // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
                         },
                         color: Colors.yellow,
                         height: MediaQuery.of(context).size.height * 0.09,
