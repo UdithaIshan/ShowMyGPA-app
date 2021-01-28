@@ -9,9 +9,11 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+
   bool isIndexSet = false;
   bool isBatchSet = false;
 
+  String _dep = 'cs';
   int _value;
   List<DropdownMenuItem<int>> batchList = [];
 
@@ -24,11 +26,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     batchList = [];
 
     batchList.add(DropdownMenuItem(
-      child: Text('16 th batch'),
+      child: Text('16th Batch'),
       value: 0,
     ));
     batchList.add(DropdownMenuItem(
-      child: Text('17 th batch'),
+      child: Text('17th Batch'),
       value: 1,
     ));
   }
@@ -89,7 +91,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           isIndexSet = true;
                         },
                         decoration: InputDecoration(
-                          hintText: "Your index number",
+                          hintText: "My index number is...",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.red, //this has no effect
@@ -97,7 +99,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
+                              vertical: MediaQuery.of(context).size.height * 0.01, horizontal: 20.0),
                         ),
                       ),
                       SizedBox(
@@ -119,7 +121,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           isBatchSet = true;
                         },
                         decoration: InputDecoration(
-                          hintText: "Select your batch",
+                          hintText: "I'm in ...",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.red, //this has no effect
@@ -130,6 +132,38 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               vertical: 10.0, horizontal: 20.0),
                         ),
                       ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Text('Studying '),
+                                Radio(
+                                  value: 'cs',
+                                  groupValue: _dep,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dep = value;
+                                    });
+                                  },
+                                ),
+                                Text('CS'),
+                                Radio(
+                                  value: 'is',
+                                  groupValue: _dep,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dep = value;
+                                    });
+                                  },
+                                ),
+                                Text('IS'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
@@ -137,6 +171,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         onPressed: () async {
                           if (isBatchSet && isIndexSet) {
                             final prefs = await SharedPreferences.getInstance();
+                            prefs.setString('dep', _dep);
                             prefs.setBool('autologin', true);
                             print('autologin true');
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
