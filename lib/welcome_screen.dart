@@ -165,7 +165,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.05,
                       ),
                       MaterialButton(
                         onPressed: () async {
