@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.3"
+  circular_custom_loader:
+    dependency: "direct main"
+    description:
+      name: circular_custom_loader
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   cli_util:
     dependency: transitive
     description:
@@ -449,6 +456,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sortedmap:
+    dependency: "direct main"
+    description:
+      name: sortedmap
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.2+1"
   source_map_stack_trace:
     dependency: transitive
     description:
