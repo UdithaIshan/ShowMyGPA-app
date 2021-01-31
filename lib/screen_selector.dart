@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/screens/home_screen.dart';
 import 'package:gpa_analyzer/screens/ranking_screen.dart';
 import 'package:gpa_analyzer/screens/semester_screen.dart';
-import 'package:gpa_analyzer/screens/settings_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
   static const String id = 'screen_selector';
@@ -12,7 +11,6 @@ class ScreenSelector extends StatefulWidget {
 }
 
 class _ScreenSelectorState extends State<ScreenSelector> {
-
   int _currentIndex = 0;
   List<Widget> _screenContainer = [
     Home(),
@@ -36,16 +34,11 @@ class _ScreenSelectorState extends State<ScreenSelector> {
             bottomNavigationBar: BottomNavigationBar(
               items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.school_outlined),
-                    label: "GPA"
-                ),
+                    icon: Icon(Icons.school_outlined), label: "GPA"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.filter_frames_outlined),
-                    label: "Results"),
+                    icon: Icon(Icons.filter_frames_outlined), label: "Results"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.info_outline_rounded),
-                    label: "More"
-                ),
+                    icon: Icon(Icons.info_outline_rounded), label: "More"),
                 // BottomNavigationBarItem(
                 //     icon: Icon(Icons.home),
                 //     label: "Home"
@@ -56,8 +49,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
               unselectedItemColor: Colors.grey,
               onTap: _onItemTapped,
             ),
-            body: _screenContainer[_currentIndex]
-        ),
+            body: _screenContainer[_currentIndex]),
       ),
     );
   }
