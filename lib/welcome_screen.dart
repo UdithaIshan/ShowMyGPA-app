@@ -115,7 +115,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 if (val != null)
                                   {
                                     val.setString(
-                                        'batch', 'batch\'${value + 16}\'')    //if value = 0; then batch = "batch16"
+                                        'batch', '${value + 16}')    //if value = 0; then batch = "batch16"
                                   }
                               });
                           isBatchSet = true;
@@ -165,7 +165,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.05,
                       ),
                       MaterialButton(
                         onPressed: () async {
