@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/screens/home_screen.dart';
 import 'package:gpa_analyzer/screens/ranking_screen.dart';
+import 'screens/settings_screen.dart';
 import 'package:gpa_analyzer/screens/semester_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSelector extends StatefulWidget {
   static const String id = 'screen_selector';
@@ -11,12 +14,12 @@ class ScreenSelector extends StatefulWidget {
 }
 
 class _ScreenSelectorState extends State<ScreenSelector> {
+
   int _currentIndex = 0;
   List<Widget> _screenContainer = [
     Home(),
-    Semester(),
     Ranking(),
-    // Settings(),
+    UserSettings(),
   ];
 
   void _onItemTapped(int index) {
@@ -49,7 +52,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
               unselectedItemColor: Colors.grey,
               onTap: _onItemTapped,
             ),
-            body: _screenContainer[_currentIndex]),
+            body: IndexedStack(index: _currentIndex,children: _screenContainer)),
       ),
     );
   }
