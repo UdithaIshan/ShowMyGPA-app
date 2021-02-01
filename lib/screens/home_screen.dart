@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   Map<String, dynamic> results;
   Map<String, dynamic> gpvs;
   Map<String, dynamic> credits;
-  Map<String, dynamic> ranks = {};
+  List<QueryDocumentSnapshot> ranks = [];
   double gpa;
   double _coveredPercent = 0;
   String _class = 'N/A';
@@ -37,13 +37,16 @@ class _HomeState extends State<Home> {
     final gpvList = await _firestore.collection('/ucsc/').doc('gpv').get();
     final creditList =
         await _firestore.collection('/ucsc/').doc('${_dep}Credits').get();
-    final rankList = await _firestore.collection('/ucsc/batch$_batch/ranks/').doc('${_dep}Rank').get();
+    // final rankList = await _firestore.collection('/ucsc/batch$_batch/ranks/').doc('${_dep}Rank').get();
+    final rankList = await _firestore
+        .collection('/ucsc/batch$_batch/$_dep/')
+        .orderBy('gpa', descending: true)
+        .get();
 
     results = resultList.data();
     gpvs = gpvList.data();
     credits = creditList.data();
-    ranks = rankList.data();
-
+    ranks = rankList.docs;
 
     gpa = getGPA(results, gpvs, credits);
 
@@ -96,51 +99,52 @@ class _HomeState extends State<Home> {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getResults,
-      child: ListView.builder(
+      child: ListView(
         padding:
             EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
-        // children: [
-        //   Align(
-        //     alignment: Alignment.center,
-        //     child: CircularLoader(
-        //       coveredPercent: _coveredPercent,
-        //       width: MediaQuery.of(context).size.width * .6,
-        //       height: MediaQuery.of(context).size.width * .6,
-        //       circleWidth: 12.0,
-        //       circleColor: Colors.grey[300],
-        //       coveredCircleColor: Colors.amber[800],
-        //       circleHeader: 'GPA',
-        //       unit: '/4.00',
-        //       coveredPercentStyle: Theme.of(context)
-        //           .textTheme
-        //           .bodyText1
-        //           .copyWith(
-        //               fontSize: 44.0,
-        //               fontWeight: FontWeight.w900,
-        //               letterSpacing: 1.0,
-        //               color: Colors.black87),
-        //     ),
-        //   ),
-        //   Align(
-        //     alignment: Alignment.center,
-        //     child: Text(_class),
-        //   ),
-        // ],
-        itemCount: ranks.length,
-        itemBuilder: (BuildContext context, int index) {
-          String key = ranks.keys.elementAt(index);
-          return new Column(
-            children: <Widget>[
-              new ListTile(
-                title: new Text("$key"),
-                subtitle: new Text("${ranks[key]}"),
-              ),
-              new Divider(
-                height: 2.0,
-              ),
-            ],
-          );
-        },
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: CircularLoader(
+              coveredPercent: _coveredPercent,
+              width: MediaQuery.of(context).size.width * .6,
+              height: MediaQuery.of(context).size.width * .6,
+              circleWidth: 12.0,
+              circleColor: Colors.grey[300],
+              coveredCircleColor: Colors.amber[800],
+              circleHeader: 'GPA',
+              unit: '/4.00',
+              coveredPercentStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(
+                      fontSize: 44.0,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.0,
+                      color: Colors.black87),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(_class),
+          ),
+          Container(
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    TableCell(child: Text('1')),
+                    TableCell(child: Text('1')),
+                    TableCell(child: Text('1'))
+                  ]
+                )
+              ],
+            ),
+          )
+        ],
+
+
+
       ),
     );
   }
