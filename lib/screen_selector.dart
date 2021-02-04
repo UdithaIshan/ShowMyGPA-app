@@ -14,10 +14,10 @@ class ScreenSelector extends StatefulWidget {
 }
 
 class _ScreenSelectorState extends State<ScreenSelector> {
-
   int _currentIndex = 0;
   List<Widget> _screenContainer = [
     Home(),
+    Semester(),
     Ranking(),
     UserSettings(),
   ];
@@ -37,22 +37,20 @@ class _ScreenSelectorState extends State<ScreenSelector> {
             bottomNavigationBar: BottomNavigationBar(
               items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.school_outlined), label: "GPA"),
+                    icon: Icon(Icons.school_outlined), label: "Overview"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.filter_frames_outlined), label: "Results"),
+                BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: "Ranking"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.info_outline_rounded), label: "More"),
-                // BottomNavigationBarItem(
-                //     icon: Icon(Icons.home),
-                //     label: "Home"
-                // ),
               ],
               currentIndex: _currentIndex,
               selectedItemColor: Colors.amber[800],
               unselectedItemColor: Colors.grey,
               onTap: _onItemTapped,
             ),
-            body: IndexedStack(index: _currentIndex,children: _screenContainer)),
+            body:
+                IndexedStack(index: _currentIndex, children: _screenContainer)),
       ),
     );
   }
