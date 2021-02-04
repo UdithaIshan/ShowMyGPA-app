@@ -15,10 +15,12 @@ class _RankingState extends State<Ranking> {
   final _firestore = FirebaseFirestore.instance;
   String _batch;
   String _dep;
+  String _index;
   List<QueryDocumentSnapshot> ranks = [];
 
   Future<Null> getResults() async {
     final prefs = await SharedPreferences.getInstance();
+    _index = prefs.getString('index');
     _batch = prefs.getString('batch');
     _dep = prefs.getString('dep');
 
@@ -31,10 +33,8 @@ class _RankingState extends State<Ranking> {
 
     ranks = rankList.docs;
 
-    setState(() {
-    });
+    setState(() {});
   }
-
 
 
   @override
@@ -52,31 +52,34 @@ class _RankingState extends State<Ranking> {
       key: _refreshIndicatorKey,
       onRefresh: getResults,
       child: ListView.builder(
-        padding:
-        EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
-        itemCount: ranks.length,
-        itemBuilder: (BuildContext context, int index) {
-          var no = index + 1;
-          if (index > 0 &&
-              ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
-            no = prevNo;
-          } else
-            prevNo = no;
+          padding:
+          EdgeInsets.only(top: MediaQuery
+              .of(context)
+              .size
+              .height * 0.05),
+          itemCount: ranks.length,
+          itemBuilder: (BuildContext context, int index) {
+            var no = index + 1;
+            if (index > 0 &&
+                ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
+              no = prevNo;
+            } else
+              prevNo = no;
 
-          // String key = ranks.keys.elementAt(index);
-          return new Column(
-            children: <Widget>[
-              new ListTile(
-                leading: Text(no.toString()),
-                title: new Text(ranks[index].id),
-                subtitle: new Text(ranks[index].data()['gpa'].toString()),
-              ),
-              new Divider(
-                height: 2.0,
-              ),
-            ],
-          );
-        },
+            return new Column(
+              children: <Widget>[
+                new ListTile(
+                  leading: Text(no.toString()),
+                  title: new Text(ranks[index].id),
+                  subtitle: new Text(ranks[index].data()['gpa'].toString()),
+                  tileColor: ranks[index].id==_index?Colors.amber[800]:Colors.white,
+                ),
+                new Divider(
+                  height: 2.0,
+                ),
+              ],
+            );
+          }
       ),
     );
   }
