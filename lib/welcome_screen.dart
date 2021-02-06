@@ -174,7 +174,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             prefs.setString('dep', _dep);
                             prefs.setBool('autologin', true);
                             print('autologin true');
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
+                            // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
                           }
 
                           // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
