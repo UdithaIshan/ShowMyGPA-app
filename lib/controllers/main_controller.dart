@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainController extends ChangeNotifier{
-
+class MainController extends ChangeNotifier {
   Future<void> setIndex(String index) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('index', index);
@@ -43,5 +41,4 @@ class MainController extends ChangeNotifier{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('autologin');
   }
-
 }

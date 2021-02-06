@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 
 class Semester extends StatefulWidget {
@@ -15,7 +13,6 @@ class _SemesterState extends State<Semester> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final _firestore = FirebaseFirestore.instance;
   final _processData = ProcessData();
   final _mainController = MainController();
 
@@ -47,7 +44,6 @@ class _SemesterState extends State<Semester> {
       results.forEach((key, value) {
         newCourses[key] = courses[key];
       });
-      print(newCourses);
       setState(() {
         allResults = results;
       });

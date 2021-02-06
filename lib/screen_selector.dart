@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gpa_analyzer/controllers/main_controller.dart';
-import 'package:gpa_analyzer/screens/home_screen.dart';
-import 'package:gpa_analyzer/screens/ranking_screen.dart';
-import 'controllers/process_data.dart';
-import 'screens/settings_screen.dart';
-import 'package:gpa_analyzer/screens/semester_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gpa_analyzer/views/home_screen.dart';
+import 'package:gpa_analyzer/views/ranking_screen.dart';
+import 'package:gpa_analyzer/views/semester_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
   static const String id = 'screen_selector';
@@ -16,7 +11,6 @@ class ScreenSelector extends StatefulWidget {
 }
 
 class _ScreenSelectorState extends State<ScreenSelector> {
-
   int _currentIndex = 0;
   List<Widget> _screenContainer = [
     Home(),
@@ -40,15 +34,15 @@ class _ScreenSelectorState extends State<ScreenSelector> {
                   icon: Icon(Icons.school_outlined), label: "Overview"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.filter_frames_outlined), label: "Results"),
-              BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: "Ranking"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.trending_up), label: "Ranking"),
             ],
             currentIndex: _currentIndex,
             selectedItemColor: Colors.amber[800],
             unselectedItemColor: Colors.grey,
             onTap: _onItemTapped,
           ),
-          body:
-              IndexedStack(index: _currentIndex, children: _screenContainer)),
+          body: IndexedStack(index: _currentIndex, children: _screenContainer)),
     );
   }
 }
