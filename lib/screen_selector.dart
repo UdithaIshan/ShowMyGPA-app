@@ -19,7 +19,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
     Home(),
     Semester(),
     Ranking(),
-    UserSettings(),
+    // UserSettings(),
   ];
 
   void _onItemTapped(int index) {
@@ -31,27 +31,24 @@ class _ScreenSelectorState extends State<ScreenSelector> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.school_outlined), label: "Overview"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.filter_frames_outlined), label: "Results"),
-                BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: "Ranking"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.info_outline_rounded), label: "More"),
-              ],
-              currentIndex: _currentIndex,
-              selectedItemColor: Colors.amber[800],
-              unselectedItemColor: Colors.grey,
-              onTap: _onItemTapped,
-            ),
-            body:
-                IndexedStack(index: _currentIndex, children: _screenContainer)),
-      ),
+      child: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.school_outlined), label: "Overview"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.filter_frames_outlined), label: "Results"),
+              BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: "Ranking"),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.info_outline_rounded), label: "More"),
+            ],
+            currentIndex: _currentIndex,
+            selectedItemColor: Colors.amber[800],
+            unselectedItemColor: Colors.grey,
+            onTap: _onItemTapped,
+          ),
+          body:
+              IndexedStack(index: _currentIndex, children: _screenContainer)),
     );
   }
 }
