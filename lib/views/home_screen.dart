@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/rendering.dart';
+import 'package:gpa_analyzer/controllers/main_controller.dart';
+import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
 
 class Home extends StatefulWidget {
@@ -12,10 +14,12 @@ class _HomeState extends State<Home> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final _firestore = FirebaseFirestore.instance;
-  String _index;
-  String _batch;
-  String _dep;
+  final _processData = ProcessData();
+  final _mainController = MainController();
+
+  var _index = 'N/A';
+  var _batch;
+  var _dep;
   Map<String, dynamic> results;
   Map<String, dynamic> gpvs;
   Map<String, dynamic> credits;
@@ -27,40 +31,31 @@ class _HomeState extends State<Home> {
   String _value = 'N/A';
 
   Future<Null> getResults() async {
-    final prefs = await SharedPreferences.getInstance();
-    _index = prefs.getString('index');
-    _batch = prefs.getString('batch');
-    _dep = prefs.getString('dep');
+    _index = await _mainController.getIndex();
+    _batch = await _mainController.getBatch();
+    _dep = await _mainController.getDepartment();
 
-    final resultList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .doc('$_index')
-        .get();
-    final gpvList = await _firestore.collection('/ucsc/').doc('gpv').get();
-    final creditList =
-        await _firestore.collection('/ucsc/').doc('${_dep}Credits').get();
-    final rankList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .orderBy('gpa', descending: true)
-        .get();
+    await _processData.getResults(_index, _batch, _dep);
 
-    ranks = rankList.docs;
+    ranks = _processData.ranks;
 
-    results = resultList.data();
-    gpvs = gpvList.data();
-    credits = creditList.data();
+    results = _processData.results;
+    gpvs = _processData.gpvs;
+    credits = _processData.credits;
 
-    gpa = getGPA(results, gpvs, credits);
-    _value = getRank(ranks, _index);
+    if (results != null && gpvs != null && credits != null) {
+      gpa = getGPA(results, gpvs, credits);
+      _value = getRank(ranks, _index);
 
-    if (!mounted) {
-      return; // Just do nothing if the widget is disposed.
+      if (!mounted) {
+        return; // Just do nothing if the widget is disposed.
+      }
+
+      setState(() {
+        _coveredPercent = gpa * 25;
+        _classType = getClass(gpa);
+      });
     }
-
-    setState(() {
-      _coveredPercent = gpa * 25;
-      _classType = getClass(gpa);
-    });
   }
 
   double getGPA(results, gpvs, credits) {
@@ -84,7 +79,8 @@ class _HomeState extends State<Home> {
       return 'First Class';
     else if (gpa < 3.50 && gpa >= 3.25)
       return 'Second Upper Class';
-    else if (gpa < 3.25 && gpa >= 3.00) return 'Second Lower Class';
+    else if (gpa < 3.25 && gpa >= 3.00)
+      return 'Second Lower Class';
     else if (gpa < 3.00) return 'Normal Degree';
     return 'N/A';
   }
@@ -111,15 +107,32 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int prevNo = 1;
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getResults,
       child: ListView(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
+        padding: EdgeInsets.fromLTRB(
+            30, MediaQuery.of(context).size.height * 0.03, 30, 0),
         children: [
           Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Welcome $_index!',
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.08,
+              ),
               CircularLoader(
                 coveredPercent: _coveredPercent,
                 width: MediaQuery.of(context).size.width * .6,
@@ -141,13 +154,13 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
               ),
-
               Text(
                 _classType,
                 style: TextStyle(fontSize: 23),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.01),
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Divider(
                   thickness: 1,
@@ -161,7 +174,7 @@ class _HomeState extends State<Home> {
                   Container(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: VerticalDivider(
-                          color: Colors.amber[800],
+                        color: Colors.amber[800],
                         thickness: 1,
                       )),
                   RowItem(title: 'Credits', value: totCREDITS.toString()),
@@ -183,19 +196,16 @@ class RowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*0.25,
+      width: MediaQuery.of(context).size.width * 0.25,
       child: Column(
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 23
-          ),),
+            style: TextStyle(fontSize: 23),
+          ),
           Text(
             value,
-            style: TextStyle(
-                fontSize: 20
-            ),
+            style: TextStyle(fontSize: 20),
           )
         ],
       ),
