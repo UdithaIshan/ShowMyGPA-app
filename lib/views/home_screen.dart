@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
 
 class Home extends StatefulWidget {
@@ -15,7 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
+      new GlobalKey<RefreshIndicatorState>();
 
   final _processData = ProcessData();
   final _mainController = MainController();
@@ -34,7 +31,6 @@ class _HomeState extends State<Home> {
   String _value = 'N/A';
 
   Future<Null> getResults() async {
-
     _index = await _mainController.getIndex();
     _batch = await _mainController.getBatch();
     _dep = await _mainController.getDepartment();
@@ -47,7 +43,7 @@ class _HomeState extends State<Home> {
     gpvs = _processData.gpvs;
     credits = _processData.credits;
 
-    if(results != null && gpvs != null && credits != null) {
+    if (results != null && gpvs != null && credits != null) {
       gpa = getGPA(results, gpvs, credits);
       _value = getRank(ranks, _index);
 
@@ -60,7 +56,6 @@ class _HomeState extends State<Home> {
         _classType = getClass(gpa);
       });
     }
-
   }
 
   double getGPA(results, gpvs, credits) {
@@ -102,60 +97,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // Future _indexEditBottomSheet(context) async {
-  //   String newIndex;
-  //   showModalBottomSheet(
-  //       shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(25),
-  //       )),
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return Container(
-  //           padding: EdgeInsets.fromLTRB(
-  //               50, 50, 50, 0),
-  //           height: MediaQuery.of(context).size.height * .5,
-  //           child: Column(
-  //             children: [
-  //               TextField(
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (value) {
-  //                   newIndex = value;
-  //                 },
-  //                 decoration: InputDecoration(
-  //                   hintText: "Change my index number to...",
-  //                   border: OutlineInputBorder(
-  //                     borderRadius: BorderRadius.circular(10.0),
-  //                   ),
-  //                   contentPadding: EdgeInsets.symmetric(
-  //                       vertical: MediaQuery.of(context).size.height * 0.01,
-  //                       horizontal: 20.0),
-  //                 ),
-  //               ),
-  //               SizedBox(height: 20,),
-  //               MaterialButton(
-  //                 onPressed: () async {
-  //                   if (newIndex.length == 8) {
-  //                     final prefs = await SharedPreferences.getInstance();
-  //                     prefs.setString('index', newIndex);
-  //                     Navigator.pop(context);
-  //                   }
-  //
-  //                   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
-  //                 },
-  //                 color: Colors.yellow,
-  //                 height: MediaQuery.of(context).size.height * 0.05,
-  //                 child: Text(
-  //                   "Set",
-  //                   // style: TextStyle(fontSize: 15 * curScaleFactor),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -187,15 +128,6 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.w700,
                         ),
                       )),
-                  // Align(
-                  //     alignment: Alignment.topRight,
-                  //     child: IconButton(
-                  //         splashRadius: 20,
-                  //         padding: EdgeInsets.all(0),
-                  //         icon: Icon(Icons.settings),
-                  //         onPressed: () {
-                  //           _indexEditBottomSheet(context).then((value) => initState());
-                  //         }))
                 ],
               ),
               SizedBox(
@@ -214,10 +146,10 @@ class _HomeState extends State<Home> {
                     .textTheme
                     .bodyText1
                     .copyWith(
-                    fontSize: 44.0,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.0,
-                    color: Colors.black87),
+                        fontSize: 44.0,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.0,
+                        color: Colors.black87),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
