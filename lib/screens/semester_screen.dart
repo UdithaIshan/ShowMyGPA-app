@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gpa_analyzer/controllers/main_controller.dart';
 
 class Semester extends StatefulWidget {
   @override
@@ -8,52 +10,87 @@ class Semester extends StatefulWidget {
 }
 
 class _SemesterState extends State<Semester> {
+  TextEditingController _searchController = TextEditingController();
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
+      new GlobalKey<RefreshIndicatorState>();
 
   final _firestore = FirebaseFirestore.instance;
+  final _processData = ProcessData();
+  final _mainController = MainController();
+
   String _batch;
   String _dep;
   String _index;
   int length = 0;
+  Map<String, dynamic> allResults = {};
+  Map<String, dynamic> showResults;
 
-  Map<String, dynamic> results={};
+  Map<String, dynamic> results = {};
+  Map<String, dynamic> courses;
+  Map<String, dynamic> newCourses = {};
   Map<String, dynamic> credits;
 
   Future<Null> getResults() async {
-    final prefs = await SharedPreferences.getInstance();
-    _index = prefs.getString('index');
-    _batch = prefs.getString('batch');
-    _dep = prefs.getString('dep');
+    _index = await _mainController.getIndex();
+    _batch = await _mainController.getBatch();
+    _dep = await _mainController.getDepartment();
 
+    await _processData.getCourses(_index, _batch, _dep);
+    results = _processData.results;
 
-
-    final resultList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .doc('$_index')
-        .get();
-    final creditList =
-    await _firestore.collection('/ucsc/').doc('${_dep}Credits').get();
-
-    results = resultList.data();
-    if(results != null){
+    if (results != null) {
       length = results.length;
-      credits = creditList.data();
-      setState(() {});
+      courses = _processData.courses;
+      credits = _processData.credits;
+
+      results.forEach((key, value) {
+        newCourses[key] = courses[key];
+      });
+      print(newCourses);
+      setState(() {
+        allResults = results;
+      });
     }
-
-
-
   }
-
-
 
   @override
   void initState() {
     super.initState();
-    // refresh when widget id build
+    _searchController.addListener(_onSearchChanged);
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    showResults = {};
+
+    if (_searchController.text != "") {
+      newCourses.forEach((key, value) {
+        if (value != null) {
+          var title = value.toLowerCase();
+          if (title.contains(_searchController.text.toLowerCase())) {
+            showResults[key] = value;
+          }
+        }
+      });
+    } else {
+      showResults = allResults;
+    }
+    setState(() {
+      results = showResults;
+    });
   }
 
   @override
@@ -61,26 +98,34 @@ class _SemesterState extends State<Semester> {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getResults,
-      child: ListView.builder(
-          padding:
-          EdgeInsets.fromLTRB(10, MediaQuery
-              .of(context)
-              .size
-              .height * 0.05, 50, 0),
-          itemCount: length,
-          itemBuilder: (BuildContext context, int index) {
-            String key = results.keys.elementAt(index);
-            if(key!='gpa') {
-              return ListTile(
-                leading: Text((index+1).toString()),
-                title: Text('Enhancement'),
-                subtitle: Text(key),
-                trailing: Text(results[key]),
-              );
-
-            }
-            return null;
-          }
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(hintText: 'Search'),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                padding: EdgeInsets.fromLTRB(
+                    10, MediaQuery.of(context).size.height * 0.05, 10, 0),
+                itemCount: results.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String key = results.keys.elementAt(index);
+                  if (key != 'gpa') {
+                    return ListTile(
+                      // leading: Text((index+1).toString()),
+                      title: Text(courses[key]),
+                      subtitle: Text(key),
+                      trailing: Text(allResults[key]),
+                    );
+                  }
+                  return null;
+                }),
+          ),
+        ],
       ),
     );
   }
