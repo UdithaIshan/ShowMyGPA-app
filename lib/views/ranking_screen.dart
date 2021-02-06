@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gpa_analyzer/controllers/main_controller.dart';
+import 'package:gpa_analyzer/controllers/process_data.dart';
 
 class Ranking extends StatefulWidget {
   @override
@@ -8,34 +9,28 @@ class Ranking extends StatefulWidget {
 }
 
 class _RankingState extends State<Ranking> {
-
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
+      new GlobalKey<RefreshIndicatorState>();
 
-  final _firestore = FirebaseFirestore.instance;
+  final _processData = ProcessData();
+  final _mainController = MainController();
+
   String _batch;
   String _dep;
   String _index;
   List<QueryDocumentSnapshot> ranks = [];
+  var no;
 
   Future<Null> getResults() async {
-    final prefs = await SharedPreferences.getInstance();
-    _index = prefs.getString('index');
-    _batch = prefs.getString('batch');
-    _dep = prefs.getString('dep');
+    _index = await _mainController.getIndex();
+    _batch = await _mainController.getBatch();
+    _dep = await _mainController.getDepartment();
+    await _processData.getRanks(_batch, _dep);
 
-
-    final rankList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .orderBy('gpa', descending: true)
-        .get();
-
-
-    ranks = rankList.docs;
-
-    setState(() {});
+    setState(() {
+      ranks = _processData.ranks;
+    });
   }
-
 
   @override
   void initState() {
@@ -53,13 +48,10 @@ class _RankingState extends State<Ranking> {
       onRefresh: getResults,
       child: ListView.builder(
           padding:
-          EdgeInsets.only(top: MediaQuery
-              .of(context)
-              .size
-              .height * 0.05),
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
           itemCount: ranks.length,
           itemBuilder: (BuildContext context, int index) {
-            var no = index + 1;
+            no = index + 1;
             if (index > 0 &&
                 ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
               no = prevNo;
@@ -72,15 +64,16 @@ class _RankingState extends State<Ranking> {
                   leading: Text(no.toString()),
                   title: new Text(ranks[index].id),
                   subtitle: new Text(ranks[index].data()['gpa'].toString()),
-                  tileColor: ranks[index].id==_index?Colors.amber[800]:Colors.white,
+                  tileColor: ranks[index].id == _index
+                      ? Colors.amber[800]
+                      : Colors.white,
                 ),
                 new Divider(
                   height: 2.0,
                 ),
               ],
             );
-          }
-      ),
+          }),
     );
   }
 }

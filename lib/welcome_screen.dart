@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/screen_selector.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'controllers/main_controller.dart';
 
 class WelcomeScreen extends StatefulWidget {
-
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  final _mainController = MainController();
 
   bool isIndexSet = false;
   bool isBatchSet = false;
@@ -16,11 +16,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String _dep = 'cs';
   int _value;
   List<DropdownMenuItem<int>> batchList = [];
-
-  Future<SharedPreferences> setUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs;
-  }
 
   void loadList() {
     batchList = [];
@@ -54,18 +49,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Expanded(
                 flex: 1,
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image(
-                        image: AssetImage('assets/student.png'),
+                        image: AssetImage('assets/male.png'),
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       Text(
-                        'GPA Analyzer',
+                        'Show(MyGPA)',
                         style: TextStyle(
-                            fontSize: 20 * curScaleFactor,
-                            fontWeight: FontWeight.w700),
+                          fontFamily: 'Archivo Black',
+                            fontSize: 35 * curScaleFactor,
+                            fontWeight: FontWeight.w700,
+                        color: Colors.amber[700],
+                        ),
                       ),
                     ],
                   ),
@@ -85,9 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       TextField(
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          setUserData().then((val) => {
-                                if (val != null) {val.setString('index', value)}
-                              });
+                          _mainController.setIndex(value);
                           isIndexSet = true;
                         },
                         decoration: InputDecoration(
@@ -99,7 +97,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: MediaQuery.of(context).size.height * 0.01, horizontal: 20.0),
+                              vertical:
+                                  MediaQuery.of(context).size.height * 0.01,
+                              horizontal: 20.0),
                         ),
                       ),
                       SizedBox(
@@ -111,13 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         value: _value,
                         onChanged: (value) {
                           _value = value;
-                          setUserData().then((val) => {
-                                if (val != null)
-                                  {
-                                    val.setString(
-                                        'batch', '${value + 16}')    //if value = 0; then batch = "batch16"
-                                  }
-                              });
+                          _mainController.setBatch('${value + 16}');
                           isBatchSet = true;
                         },
                         decoration: InputDecoration(
@@ -170,14 +164,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       MaterialButton(
                         onPressed: () async {
                           if (isBatchSet && isIndexSet) {
-                            final prefs = await SharedPreferences.getInstance();
-                            prefs.setString('dep', _dep);
-                            prefs.setBool('autologin', true);
-                            print('autologin true');
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
+                            _mainController.setDepartment(_dep);
+                            _mainController.setLogin(true);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ScreenSelector()));
                           }
-
-                          // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
                         },
                         color: Colors.yellow,
                         height: MediaQuery.of(context).size.height * 0.09,
