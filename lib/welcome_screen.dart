@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/screen_selector.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'controllers/main_controller.dart';
 
 class WelcomeScreen extends StatefulWidget {
 
@@ -10,6 +13,8 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
 
+  final _mainController = MainController();
+
   bool isIndexSet = false;
   bool isBatchSet = false;
 
@@ -17,10 +22,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   int _value;
   List<DropdownMenuItem<int>> batchList = [];
 
-  Future<SharedPreferences> setUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs;
-  }
+  // Future<SharedPreferences> setUserData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   return prefs;
+  // }
 
   void loadList() {
     batchList = [];
@@ -85,9 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       TextField(
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          setUserData().then((val) => {
-                                if (val != null) {val.setString('index', value)}
-                              });
+                          _mainController.setIndex(value);
                           isIndexSet = true;
                         },
                         decoration: InputDecoration(
@@ -111,13 +114,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         value: _value,
                         onChanged: (value) {
                           _value = value;
-                          setUserData().then((val) => {
-                                if (val != null)
-                                  {
-                                    val.setString(
-                                        'batch', '${value + 16}')    //if value = 0; then batch = "batch16"
-                                  }
-                              });
+                          _mainController.setBatch('${value + 16}');
                           isBatchSet = true;
                         },
                         decoration: InputDecoration(
@@ -170,10 +167,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       MaterialButton(
                         onPressed: () async {
                           if (isBatchSet && isIndexSet) {
-                            final prefs = await SharedPreferences.getInstance();
-                            prefs.setString('dep', _dep);
-                            prefs.setBool('autologin', true);
-                            print('autologin true');
+                            _mainController.setDepartment(_dep);
+                            _mainController.setLogin(true);
                             // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
                           }

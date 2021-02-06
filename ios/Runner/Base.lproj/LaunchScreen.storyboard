@@ -31,7 +31,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
-    <resources>
+    <src.blocs.resources>
         <image name="LaunchImage" width="168" height="185"/>
-    </resources>
+    </src.blocs.resources>
 </document>

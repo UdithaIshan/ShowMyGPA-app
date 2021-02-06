@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gpa_analyzer/controllers/main_controller.dart';
+import 'package:gpa_analyzer/controllers/process_data.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
 
@@ -12,12 +15,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
 
-  final _firestore = FirebaseFirestore.instance;
-  String _index;
-  String _batch;
-  String _dep;
+  final _processData = ProcessData();
+  final _mainController = MainController();
+
+  var _index = 'N/A';
+  var _batch;
+  var _dep;
   Map<String, dynamic> results;
   Map<String, dynamic> gpvs;
   Map<String, dynamic> credits;
@@ -29,28 +34,18 @@ class _HomeState extends State<Home> {
   String _value = 'N/A';
 
   Future<Null> getResults() async {
-    final prefs = await SharedPreferences.getInstance();
-    _index = prefs.getString('index');
-    _batch = prefs.getString('batch');
-    _dep = prefs.getString('dep');
 
-    final resultList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .doc('$_index')
-        .get();
-    final gpvList = await _firestore.collection('/ucsc/').doc('gpv').get();
-    final creditList =
-        await _firestore.collection('/ucsc/').doc('${_dep}Credits').get();
-    final rankList = await _firestore
-        .collection('/ucsc/batch$_batch/$_dep/')
-        .orderBy('gpa', descending: true)
-        .get();
+    _index = await _mainController.getIndex();
+    _batch = await _mainController.getBatch();
+    _dep = await _mainController.getDepartment();
 
-    ranks = rankList.docs;
+    await _processData.getResults(_index, _batch, _dep);
 
-    results = resultList.data();
-    gpvs = gpvList.data();
-    credits = creditList.data();
+    ranks = _processData.ranks;
+
+    results = _processData.results;
+    gpvs = _processData.gpvs;
+    credits = _processData.credits;
 
     if(results != null && gpvs != null && credits != null) {
       gpa = getGPA(results, gpvs, credits);
@@ -65,7 +60,6 @@ class _HomeState extends State<Home> {
         _classType = getClass(gpa);
       });
     }
-
 
   }
 
@@ -172,7 +166,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    int prevNo = 1;
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getResults,
@@ -221,10 +214,10 @@ class _HomeState extends State<Home> {
                     .textTheme
                     .bodyText1
                     .copyWith(
-                        fontSize: 44.0,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.0,
-                        color: Colors.black87),
+                    fontSize: 44.0,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.0,
+                    color: Colors.black87),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
