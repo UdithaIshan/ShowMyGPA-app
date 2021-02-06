@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
 
@@ -50,17 +52,21 @@ class _HomeState extends State<Home> {
     gpvs = gpvList.data();
     credits = creditList.data();
 
-    gpa = getGPA(results, gpvs, credits);
-    _value = getRank(ranks, _index);
+    if(results != null && gpvs != null && credits != null) {
+      gpa = getGPA(results, gpvs, credits);
+      _value = getRank(ranks, _index);
 
-    if (!mounted) {
-      return; // Just do nothing if the widget is disposed.
+      if (!mounted) {
+        return; // Just do nothing if the widget is disposed.
+      }
+
+      setState(() {
+        _coveredPercent = gpa * 25;
+        _classType = getClass(gpa);
+      });
     }
 
-    setState(() {
-      _coveredPercent = gpa * 25;
-      _classType = getClass(gpa);
-    });
+
   }
 
   double getGPA(results, gpvs, credits) {
@@ -84,7 +90,8 @@ class _HomeState extends State<Home> {
       return 'First Class';
     else if (gpa < 3.50 && gpa >= 3.25)
       return 'Second Upper Class';
-    else if (gpa < 3.25 && gpa >= 3.00) return 'Second Lower Class';
+    else if (gpa < 3.25 && gpa >= 3.00)
+      return 'Second Lower Class';
     else if (gpa < 3.00) return 'Normal Degree';
     return 'N/A';
   }
@@ -101,6 +108,60 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // Future _indexEditBottomSheet(context) async {
+  //   String newIndex;
+  //   showModalBottomSheet(
+  //       shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(25),
+  //       )),
+  //       context: context,
+  //       builder: (BuildContext bc) {
+  //         return Container(
+  //           padding: EdgeInsets.fromLTRB(
+  //               50, 50, 50, 0),
+  //           height: MediaQuery.of(context).size.height * .5,
+  //           child: Column(
+  //             children: [
+  //               TextField(
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (value) {
+  //                   newIndex = value;
+  //                 },
+  //                 decoration: InputDecoration(
+  //                   hintText: "Change my index number to...",
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                   ),
+  //                   contentPadding: EdgeInsets.symmetric(
+  //                       vertical: MediaQuery.of(context).size.height * 0.01,
+  //                       horizontal: 20.0),
+  //                 ),
+  //               ),
+  //               SizedBox(height: 20,),
+  //               MaterialButton(
+  //                 onPressed: () async {
+  //                   if (newIndex.length == 8) {
+  //                     final prefs = await SharedPreferences.getInstance();
+  //                     prefs.setString('index', newIndex);
+  //                     Navigator.pop(context);
+  //                   }
+  //
+  //                   // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScreenSelector()));
+  //                 },
+  //                 color: Colors.yellow,
+  //                 height: MediaQuery.of(context).size.height * 0.05,
+  //                 child: Text(
+  //                   "Set",
+  //                   // style: TextStyle(fontSize: 15 * curScaleFactor),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
+
   @override
   void initState() {
     super.initState();
@@ -116,10 +177,37 @@ class _HomeState extends State<Home> {
       key: _refreshIndicatorKey,
       onRefresh: getResults,
       child: ListView(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
+        padding: EdgeInsets.fromLTRB(
+            30, MediaQuery.of(context).size.height * 0.03, 30, 0),
         children: [
           Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Welcome $_index!',
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )),
+                  // Align(
+                  //     alignment: Alignment.topRight,
+                  //     child: IconButton(
+                  //         splashRadius: 20,
+                  //         padding: EdgeInsets.all(0),
+                  //         icon: Icon(Icons.settings),
+                  //         onPressed: () {
+                  //           _indexEditBottomSheet(context).then((value) => initState());
+                  //         }))
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.08,
+              ),
               CircularLoader(
                 coveredPercent: _coveredPercent,
                 width: MediaQuery.of(context).size.width * .6,
@@ -141,13 +229,13 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
               ),
-
               Text(
                 _classType,
                 style: TextStyle(fontSize: 23),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.01),
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Divider(
                   thickness: 1,
@@ -161,7 +249,7 @@ class _HomeState extends State<Home> {
                   Container(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: VerticalDivider(
-                          color: Colors.amber[800],
+                        color: Colors.amber[800],
                         thickness: 1,
                       )),
                   RowItem(title: 'Credits', value: totCREDITS.toString()),
@@ -183,19 +271,16 @@ class RowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*0.25,
+      width: MediaQuery.of(context).size.width * 0.25,
       child: Column(
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 23
-          ),),
+            style: TextStyle(fontSize: 23),
+          ),
           Text(
             value,
-            style: TextStyle(
-                fontSize: 20
-            ),
+            style: TextStyle(fontSize: 20),
           )
         ],
       ),
