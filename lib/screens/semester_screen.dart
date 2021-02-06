@@ -15,7 +15,9 @@ class _SemesterState extends State<Semester> {
   String _batch;
   String _dep;
   String _index;
-  Map<String, dynamic> results;
+  int length = 0;
+
+  Map<String, dynamic> results={};
   Map<String, dynamic> credits;
 
   Future<Null> getResults() async {
@@ -34,10 +36,16 @@ class _SemesterState extends State<Semester> {
     await _firestore.collection('/ucsc/').doc('${_dep}Credits').get();
 
     results = resultList.data();
-    credits = creditList.data();
+    if(results != null){
+      length = results.length;
+      credits = creditList.data();
+      setState(() {});
+    }
 
-    setState(() {});
+
+
   }
+
 
 
   @override
@@ -55,17 +63,23 @@ class _SemesterState extends State<Semester> {
       onRefresh: getResults,
       child: ListView.builder(
           padding:
-          EdgeInsets.only(top: MediaQuery
+          EdgeInsets.fromLTRB(10, MediaQuery
               .of(context)
               .size
-              .height * 0.05),
-          itemCount: results.length,
+              .height * 0.05, 50, 0),
+          itemCount: length,
           itemBuilder: (BuildContext context, int index) {
+            String key = results.keys.elementAt(index);
+            if(key!='gpa') {
+              return ListTile(
+                leading: Text((index+1).toString()),
+                title: Text('Enhancement'),
+                subtitle: Text(key),
+                trailing: Text(results[key]),
+              );
 
-            return new Card(
-              color: Colors.amber,
-              child: Text(index.toString()),
-            );
+            }
+            return null;
           }
       ),
     );
