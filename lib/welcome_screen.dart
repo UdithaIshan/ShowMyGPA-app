@@ -55,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image(
-                        image: AssetImage('assets/student-male-480.png'),
+                        image: AssetImage('assets/students.png'),
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       Text(
@@ -177,7 +177,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         height: MediaQuery.of(context).size.height * 0.09,
                         child: Text(
                           "I'm ready !",
-                          style: TextStyle(fontSize: 15 * curScaleFactor),
+                          style: TextStyle(fontSize: 20 * curScaleFactor,  fontFamily: 'Archivo Black',color: Colors.grey[800]),
                         ),
                       ),
                       SizedBox(
