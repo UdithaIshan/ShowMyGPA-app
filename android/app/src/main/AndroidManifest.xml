@@ -2,7 +2,8 @@
     package="com.devstream.gpa_analyzer">
    <application
         android:label="Show(MyGPA)"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:resizeableActivity="false">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
