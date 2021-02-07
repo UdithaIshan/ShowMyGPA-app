@@ -112,7 +112,7 @@ class _SemesterState extends State<Semester> {
                   String key = results.keys.elementAt(index);
                   if (key != 'gpa') {
                     return ListTile(
-                      // leading: Text((index+1).toString()),
+                      contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
                       title: Text(courses[key]),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
