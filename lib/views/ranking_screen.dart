@@ -19,6 +19,7 @@ class _RankingState extends State<Ranking> {
   String _dep;
   String _index;
   List<QueryDocumentSnapshot> ranks = [];
+  Map rankList = {};
   var no;
 
   Future<Null> getResults() async {
@@ -26,10 +27,22 @@ class _RankingState extends State<Ranking> {
     _batch = await _mainController.getBatch();
     _dep = await _mainController.getDepartment();
     await _processData.getRanks(_batch, _dep);
+    ranks = _processData.ranks;
+    setRankList(ranks);
+  }
 
-    setState(() {
-      ranks = _processData.ranks;
-    });
+  void setRankList(ranks) {
+    int prevNo = 0;
+    for (var index = 0; index < ranks.length; index++) {
+      no = index + 1;
+      if (index > 0 &&
+          ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
+        no = prevNo;
+      } else
+        prevNo = no;
+      rankList[index] = no;
+    }
+    setState(() {});
   }
 
   @override
@@ -42,7 +55,7 @@ class _RankingState extends State<Ranking> {
 
   @override
   Widget build(BuildContext context) {
-    int prevNo = 1;
+    // int prevNo = 1;
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getResults,
@@ -51,17 +64,17 @@ class _RankingState extends State<Ranking> {
               EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
           itemCount: ranks.length,
           itemBuilder: (BuildContext context, int index) {
-            no = index + 1;
-            if (index > 0 &&
-                ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
-              no = prevNo;
-            } else
-              prevNo = no;
+            // no = index + 1;
+            // if (index > 0 &&
+            //     ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
+            //   no = prevNo;
+            // } else
+            //   prevNo = no;
 
             return new Column(
               children: <Widget>[
                 new ListTile(
-                  leading: Text(no.toString()),
+                  leading: Text(rankList[index].toString()),
                   title: new Text(ranks[index].id),
                   subtitle: new Text(ranks[index].data()['gpa'].toString()),
                   tileColor: ranks[index].id == _index
