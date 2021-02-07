@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
@@ -115,21 +116,21 @@ class _HomeState extends State<Home> {
             30, MediaQuery.of(context).size.height * 0.03, 30, 0),
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Welcome $_index!',
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )),
-                ],
-              ),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Welcome $_index!',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text('You have obtained,',
+                      style: TextStyle(fontSize: 17))),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.08,
               ),
@@ -152,11 +153,15 @@ class _HomeState extends State<Home> {
                         color: Colors.black87),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.07,
               ),
-              Text(
-                _classType,
-                style: TextStyle(fontSize: 23),
+              Column(
+                children: [
+                  Text(
+                    _classType,
+                    style: TextStyle(fontSize: 23),
+                  ),
+                ],
               ),
               Container(
                 margin: EdgeInsets.only(
