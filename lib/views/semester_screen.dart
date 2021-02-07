@@ -106,15 +106,21 @@ class _SemesterState extends State<Semester> {
           Expanded(
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(
-                    10, MediaQuery.of(context).size.height * 0.05, 10, 0),
+                    20, MediaQuery.of(context).size.height * 0.05, 20, 0),
                 itemCount: results.length,
                 itemBuilder: (BuildContext context, int index) {
                   String key = results.keys.elementAt(index);
                   if (key != 'gpa') {
                     return ListTile(
-                      // leading: Text((index+1).toString()),
+                      contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
                       title: Text(courses[key]),
-                      subtitle: Text(key),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(key),
+                          Text('${credits[key].toString()} Credits'),
+                        ],
+                      ),
                       trailing: Text(allResults[key]),
                     );
                   }
