@@ -12,7 +12,7 @@ class _SemesterState extends State<Semester> {
   TextEditingController _searchController = TextEditingController();
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
 
   final _processData = ProcessData();
   final _mainController = MainController();
@@ -21,11 +21,10 @@ class _SemesterState extends State<Semester> {
   String _dep;
   String _index;
   int length = 0;
-  var sortedResults = new SplayTreeMap<String, dynamic>();
-  Map<String, dynamic> newSortedResults = {};
+  var sortedResults = new SplayTreeMap<String,dynamic> ();
 
   Map<String, dynamic> allResults = {};
-  Map<String, dynamic> showResults;
+  var showResults;
 
   Map<String, dynamic> results = {};
   Map<String, dynamic> courses;
@@ -44,20 +43,18 @@ class _SemesterState extends State<Semester> {
       length = results.length;
       courses = _processData.courses;
       credits = _processData.credits;
-      sortedResults =
-          SplayTreeMap<String, dynamic>.from(results, (a, b) => a.compareTo(b));
+      sortedResults = SplayTreeMap<String,dynamic>.from(results, (a, b) => a.compareTo(b));
+      // newS
+      // sortedResults.forEach((key, value) {
+      //
+      // });
 
-      for (var i = sortedResults.length - 1; i >= 0; i--) {
-        String key = sortedResults.keys.elementAt(i);
-        newSortedResults[key] = sortedResults[key];
-      }
-
-      newSortedResults.forEach((key, value) {
+      sortedResults.forEach((key, value) {
         newCourses[key] = courses[key];
       });
 
       setState(() {
-        allResults = newSortedResults;
+        allResults = sortedResults;
       });
     }
   }
@@ -82,14 +79,14 @@ class _SemesterState extends State<Semester> {
   }
 
   searchResultsList() {
-    showResults = {};
+    showResults = SplayTreeMap<String,dynamic>();
 
     if (_searchController.text != "") {
       newCourses.forEach((key, value) {
         if (value != null) {
           var title = value.toLowerCase();
           if (title.contains(_searchController.text.toLowerCase())) {
-            showResults[key] = value;
+            showResults.putIfAbsent(key, () => value);
           }
         }
       });
@@ -97,7 +94,7 @@ class _SemesterState extends State<Semester> {
       showResults = allResults;
     }
     setState(() {
-      newSortedResults = showResults;
+      sortedResults = showResults;
     });
   }
 
@@ -119,10 +116,10 @@ class _SemesterState extends State<Semester> {
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(
                     20, MediaQuery.of(context).size.height * 0.05, 20, 0),
-                itemCount: newSortedResults.length,
+                itemCount: sortedResults.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String key = newSortedResults.keys.elementAt(index);
-                  if (key != null) {
+                  String key = sortedResults.keys.elementAt(index);
+                  if (key != 'gpa' && key != null) {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
                       title: Text(courses[key]),
