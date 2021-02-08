@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
+import 'dart:collection';
 
 class Semester extends StatefulWidget {
   @override
@@ -20,6 +21,9 @@ class _SemesterState extends State<Semester> {
   String _dep;
   String _index;
   int length = 0;
+  var sortedResults = new SplayTreeMap<String, dynamic>();
+  Map<String, dynamic> newSortedResults = {};
+
   Map<String, dynamic> allResults = {};
   Map<String, dynamic> showResults;
 
@@ -40,12 +44,20 @@ class _SemesterState extends State<Semester> {
       length = results.length;
       courses = _processData.courses;
       credits = _processData.credits;
+      sortedResults =
+          SplayTreeMap<String, dynamic>.from(results, (a, b) => a.compareTo(b));
 
-      results.forEach((key, value) {
+      for (var i = sortedResults.length - 1; i >= 0; i--) {
+        String key = sortedResults.keys.elementAt(i);
+        newSortedResults[key] = sortedResults[key];
+      }
+
+      newSortedResults.forEach((key, value) {
         newCourses[key] = courses[key];
       });
+
       setState(() {
-        allResults = results;
+        allResults = newSortedResults;
       });
     }
   }
@@ -85,7 +97,7 @@ class _SemesterState extends State<Semester> {
       showResults = allResults;
     }
     setState(() {
-      results = showResults;
+      newSortedResults = showResults;
     });
   }
 
@@ -107,10 +119,10 @@ class _SemesterState extends State<Semester> {
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(
                     20, MediaQuery.of(context).size.height * 0.05, 20, 0),
-                itemCount: results.length,
+                itemCount: newSortedResults.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String key = results.keys.elementAt(index);
-                  if (key != 'gpa') {
+                  String key = newSortedResults.keys.elementAt(index);
+                  if (key != null) {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
                       title: Text(courses[key]),
