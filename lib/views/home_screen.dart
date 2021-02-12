@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
+import 'package:gpa_analyzer/values.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,11 +22,13 @@ class _HomeState extends State<Home> {
   var _index = 'N/A';
   var _batch;
   var _dep;
+  final Map<String, dynamic> gpvsForClass = gpvForClass;
   Map<String, dynamic> results;
   Map<String, dynamic> gpvs;
   Map<String, dynamic> credits;
   List<QueryDocumentSnapshot> ranks = [];
   double gpa;
+  double gpaForClass;
   int totCREDITS = 0;
   double _coveredPercent = 0;
   String _classType = 'N/A';
@@ -46,6 +49,7 @@ class _HomeState extends State<Home> {
 
     if (results != null && gpvs != null && credits != null) {
       gpa = getGPA(results, gpvs, credits);
+      gpaForClass = getGPAForClass(results, gpvsForClass, credits);
       _value = getRank(ranks, _index);
 
       if (!mounted) {
@@ -54,7 +58,7 @@ class _HomeState extends State<Home> {
 
       setState(() {
         _coveredPercent = gpa * 25;
-        _classType = getClass(gpa);
+        _classType = getClass(gpaForClass);
       });
     }
   }
@@ -71,8 +75,24 @@ class _HomeState extends State<Home> {
         totGPV += gpv * credit;
       }
     });
+    // var n = totGPV / totCREDITS;
+    return (totGPV / totCREDITS * 100).truncateToDouble() / 100;
+  }
 
-    return totGPV / totCREDITS;
+  double getGPAForClass(results, gpvsForClass, credits) {
+    var totGPV = 0.0;
+    var totalCREDITS = 0;
+
+    results.forEach((key, value) {
+      if (gpvsForClass[value] != null) {
+        var gpv = gpvsForClass[value];
+        var credit = credits[key];
+        totalCREDITS += credit;
+        totGPV += gpv * credit;
+      }
+    });
+
+    return (totGPV / totalCREDITS * 100).truncateToDouble() / 100;
   }
 
   String getClass(gpa) {
