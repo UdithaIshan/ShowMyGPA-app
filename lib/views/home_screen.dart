@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
               Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Welcome 12345678!',
+                    'Welcome $_index!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
