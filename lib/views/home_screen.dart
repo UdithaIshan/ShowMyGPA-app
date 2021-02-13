@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
 
   final _processData = ProcessData();
   final _mainController = MainController();
@@ -167,10 +167,10 @@ class _HomeState extends State<Home> {
                     .textTheme
                     .bodyText1
                     .copyWith(
-                        fontSize: 44.0,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.0,
-                        color: Colors.black87),
+                    fontSize: 44.0,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.0,
+                    color: Colors.black87),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.07,
