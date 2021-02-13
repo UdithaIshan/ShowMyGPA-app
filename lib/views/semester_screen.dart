@@ -106,7 +106,7 @@ class _SemesterState extends State<Semester> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+            padding: const EdgeInsets.fromLTRB(75, 20, 75, 20),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(hintText: 'Search'),
@@ -115,7 +115,7 @@ class _SemesterState extends State<Semester> {
           Expanded(
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.05, 20, 0),
+                    0, MediaQuery.of(context).size.height * 0.05, 0, 0),
                 itemCount: sortedResults.length,
                 itemBuilder: (BuildContext context, int index) {
                   String key = sortedResults.keys.elementAt(index);
