@@ -23,9 +23,7 @@ class GPAAnalyzer extends StatelessWidget {
     return MaterialApp(
       title: 'Show(MyGPA)',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.white,
-      ),
+      theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Ubuntu'),
       home: flag ? ScreenSelector() : WelcomeScreen(),
     );
   }
