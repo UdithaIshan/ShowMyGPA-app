@@ -8,6 +8,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+
   final _mainController = MainController();
 
   bool isIndexSet = false;
@@ -62,9 +63,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         'Show(MyGPA)',
                         style: TextStyle(
                           fontFamily: 'Archivo Black',
-                            fontSize: 35 * curScaleFactor,
-                            fontWeight: FontWeight.w700,
-                        color: Colors.amber[700],
+                          fontSize: 30 * curScaleFactor,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.amber[700],
                         ),
                       ),
                     ],
@@ -162,6 +163,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         height: MediaQuery.of(context).size.height * 0.05,
                       ),
                       MaterialButton(
+
                         onPressed: () async {
                           if (isBatchSet && isIndexSet) {
                             _mainController.setDepartment(_dep);
