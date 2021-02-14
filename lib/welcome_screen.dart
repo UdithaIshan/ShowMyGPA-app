@@ -46,12 +46,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                flex: 1,
+              ClipPath(
+                clipper: BezierClipper(2),
                 child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  color: Color.fromRGBO(254, 101, 65, 1),
                   padding: EdgeInsets.symmetric(horizontal: 30.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image(
@@ -61,18 +63,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       Text(
                         'Show(MyGPA)',
                         style: TextStyle(
-                          fontFamily: 'Archivo Black',
-                            fontSize: 35 * curScaleFactor,
-                            fontWeight: FontWeight.w700,
-                        color: Colors.amber[700],
+                          fontFamily: 'Ubuntu',
+                          fontSize: 35 * curScaleFactor,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
+              Container(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.0),
                   child: Column(
@@ -80,7 +81,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.05,
                       ),
                       TextField(
                         keyboardType: TextInputType.number,
@@ -134,6 +135,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               children: [
                                 Text('Studying '),
                                 Radio(
+                                  activeColor: Color.fromRGBO(254, 101, 65, 1),
                                   value: 'cs',
                                   groupValue: _dep,
                                   onChanged: (value) {
@@ -144,6 +146,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 ),
                                 Text('CS'),
                                 Radio(
+                                  activeColor: Color.fromRGBO(254, 101, 65, 1),
                                   value: 'is',
                                   groupValue: _dep,
                                   onChanged: (value) {
@@ -173,11 +176,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         ScreenSelector()));
                           }
                         },
-                        color: Colors.yellow,
+                        color: Color.fromRGBO(254, 101, 65, 1),
                         height: MediaQuery.of(context).size.height * 0.09,
                         child: Text(
                           "I'm ready !",
-                          style: TextStyle(fontSize: 20 * curScaleFactor,  fontFamily: 'Archivo Black',color: Colors.grey[800]),
+                          style: TextStyle(
+                              fontSize: 20 * curScaleFactor,
+                              color: Colors.white),
                         ),
                       ),
                       SizedBox(
@@ -193,4 +198,79 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
+}
+
+class BezierClipper extends CustomClipper<Path> {
+  final int state;
+  BezierClipper(this.state);
+
+  Path _getFinalClip(Size size) {
+    Path path = Path();
+    final double _xScaling = size.width / 414;
+    final double _yScaling = size.height / 301.69;
+    path.lineTo(-0.003999999999997783 * _xScaling, 217.841 * _yScaling);
+    path.cubicTo(
+      -0.003999999999997783 * _xScaling,
+      217.841 * _yScaling,
+      19.14 * _xScaling,
+      265.91999999999996 * _yScaling,
+      67.233 * _xScaling,
+      265.91999999999996 * _yScaling,
+    );
+    path.cubicTo(
+      115.326 * _xScaling,
+      265.91999999999996 * _yScaling,
+      112.752 * _xScaling,
+      234.611 * _yScaling,
+      173.83299999999997 * _xScaling,
+      241.635 * _yScaling,
+    );
+    path.cubicTo(
+      234.914 * _xScaling,
+      248.659 * _yScaling,
+      272.866 * _xScaling,
+      301.691 * _yScaling,
+      328.608 * _xScaling,
+      301.691 * _yScaling,
+    );
+    path.cubicTo(
+      384.34999999999997 * _xScaling,
+      301.691 * _yScaling,
+      413.99600000000004 * _xScaling,
+      201.977 * _yScaling,
+      413.99600000000004 * _xScaling,
+      201.977 * _yScaling,
+    );
+    path.cubicTo(
+      413.99600000000004 * _xScaling,
+      201.977 * _yScaling,
+      413.99600000000004 * _xScaling,
+      0 * _yScaling,
+      413.99600000000004 * _xScaling,
+      0 * _yScaling,
+    );
+    path.cubicTo(
+      413.99600000000004 * _xScaling,
+      0 * _yScaling,
+      -0.003999999999976467 * _xScaling,
+      0 * _yScaling,
+      -0.003999999999976467 * _xScaling,
+      0 * _yScaling,
+    );
+    path.cubicTo(
+      -0.003999999999976467 * _xScaling,
+      0 * _yScaling,
+      -0.003999999999997783 * _xScaling,
+      217.841 * _yScaling,
+      -0.003999999999997783 * _xScaling,
+      217.841 * _yScaling,
+    );
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+
+  @override
+  Path getClip(Size size) => _getFinalClip(size);
 }

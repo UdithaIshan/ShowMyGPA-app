@@ -64,13 +64,6 @@ class _RankingState extends State<Ranking> {
               EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
           itemCount: ranks.length,
           itemBuilder: (BuildContext context, int index) {
-            // no = index + 1;
-            // if (index > 0 &&
-            //     ranks[index].data()['gpa'] == ranks[index - 1].data()['gpa']) {
-            //   no = prevNo;
-            // } else
-            //   prevNo = no;
-
             return new Column(
               children: <Widget>[
                 new ListTile(
@@ -78,7 +71,7 @@ class _RankingState extends State<Ranking> {
                   title: new Text(ranks[index].id),
                   subtitle: new Text(ranks[index].data()['gpa'].toString()),
                   tileColor: ranks[index].id == _index
-                      ? Colors.amber[800]
+                      ? Color.fromRGBO(254, 101, 65, 1)
                       : Colors.white,
                 ),
                 new Divider(

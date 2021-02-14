@@ -38,7 +38,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
                   icon: Icon(Icons.trending_up), label: "Ranking"),
             ],
             currentIndex: _currentIndex,
-            selectedItemColor: Colors.amber[800],
+            selectedItemColor: Color.fromRGBO(254, 101, 65, 1),
             unselectedItemColor: Colors.grey,
             onTap: _onItemTapped,
           ),

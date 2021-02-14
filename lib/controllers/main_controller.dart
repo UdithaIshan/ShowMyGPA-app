@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainController extends ChangeNotifier {
+class MainController {
   Future<void> setIndex(String index) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('index', index);
