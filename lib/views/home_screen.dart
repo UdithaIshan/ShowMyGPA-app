@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
-import 'package:gpa_analyzer/values.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -22,14 +21,12 @@ class _HomeState extends State<Home> {
   var _index = 'N/A';
   var _batch;
   var _dep;
-  final Map<String, dynamic> gpvsForClass = gpvForClass;
-  Map<String, dynamic> results;
-  Map<String, dynamic> gpvs;
-  Map<String, dynamic> credits;
-  List<QueryDocumentSnapshot> ranks = [];
-  double gpa;
-  double gpaForClass;
-  int totCREDITS = 0;
+  Map<String, dynamic> _results;
+  Map<String, dynamic> _gpvs;
+  Map<String, dynamic> _credits;
+  List<QueryDocumentSnapshot> _ranks = [];
+  double _gpa;
+  int _totCREDITS = 0;
   double _coveredPercent = 0;
   String _classType = 'N/A';
   String _value = 'N/A';
@@ -41,66 +38,48 @@ class _HomeState extends State<Home> {
 
     await _processData.getResults(_index, _batch, _dep);
 
-    ranks = _processData.ranks;
+    _ranks = _processData.ranks;
 
-    results = _processData.results;
-    gpvs = _processData.gpvs;
-    credits = _processData.credits;
+    _results = _processData.results;
+    _gpvs = _processData.gpvs;
+    _credits = _processData.credits;
 
-    if (results != null && gpvs != null && credits != null) {
-      gpa = getGPA(results, gpvs, credits);
-      gpaForClass = getGPAForClass(results, gpvsForClass, credits);
-      _value = getRank(ranks, _index);
+    if (_results != null && _gpvs != null && _credits != null) {
+      _gpa = getGPA(_results, _gpvs, _credits);
+      _value = getRank(_ranks, _index);
 
       if (!mounted) {
         return; // Just do nothing if the widget is disposed.
       }
 
       setState(() {
-        _coveredPercent = gpa * 25;
-        _classType = getClass(gpaForClass);
+        _coveredPercent = _gpa * 25;
+        _classType = getClass(_gpa);
       });
     }
   }
 
   double getGPA(results, gpvs, credits) {
     var totGPV = 0.0;
-    totCREDITS = 0;
+    _totCREDITS = 0;
 
     results.forEach((key, value) {
       if (gpvs[value] != null) {
         var gpv = gpvs[value];
         var credit = credits[key];
-        totCREDITS += credit;
+        _totCREDITS += credit;
         totGPV += gpv * credit;
       }
     });
-    // var n = totGPV / totCREDITS;
-    return (totGPV / totCREDITS * 100).truncateToDouble() / 100;
-  }
-
-  double getGPAForClass(results, gpvsForClass, credits) {
-    var totGPV = 0.0;
-    var totalCREDITS = 0;
-
-    results.forEach((key, value) {
-      if (gpvsForClass[value] != null) {
-        var gpv = gpvsForClass[value];
-        var credit = credits[key];
-        totalCREDITS += credit;
-        totGPV += gpv * credit;
-      }
-    });
-
-    return (totGPV / totalCREDITS * 100).truncateToDouble() / 100;
+    return (totGPV / _totCREDITS * 100).truncateToDouble() / 100;
   }
 
   String getClass(gpa) {
-    if (gpa >= 3.50)
+    if (gpa >= 3.70)
       return 'First Class';
-    else if (gpa < 3.50 && gpa >= 3.25)
+    else if (gpa < 3.70 && gpa >= 3.30)
       return 'Second Upper Class';
-    else if (gpa < 3.25 && gpa >= 3.00)
+    else if (gpa < 3.30 && gpa >= 3.00)
       return 'Second Lower Class';
     else if (gpa < 3.00) return 'Normal Degree';
     return 'N/A';
@@ -202,7 +181,7 @@ class _HomeState extends State<Home> {
                         color: Color.fromRGBO(255, 91, 53, 1),
                         thickness: 1,
                       )),
-                  RowItem(title: 'Credits', value: totCREDITS.toString()),
+                  RowItem(title: 'Credits', value: _totCREDITS.toString()),
                 ],
               ),
               SizedBox(
