@@ -12,7 +12,7 @@ class _SemesterState extends State<Semester> {
   TextEditingController _searchController = TextEditingController();
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
+      new GlobalKey<RefreshIndicatorState>();
 
   final _processData = ProcessData();
   final _mainController = MainController();
@@ -21,7 +21,7 @@ class _SemesterState extends State<Semester> {
   String _dep;
   String _index;
   int length = 0;
-  var sortedResults = new SplayTreeMap<String,dynamic> ();
+  var sortedResults = new SplayTreeMap<String, dynamic>();
 
   Map<String, dynamic> allResults = {};
   var showResults;
@@ -43,7 +43,8 @@ class _SemesterState extends State<Semester> {
       length = results.length;
       courses = _processData.courses;
       credits = _processData.credits;
-      sortedResults = SplayTreeMap<String,dynamic>.from(results, (a, b) => a.compareTo(b));
+      sortedResults =
+          SplayTreeMap<String, dynamic>.from(results, (a, b) => a.compareTo(b));
       // newS
       // sortedResults.forEach((key, value) {
       //
@@ -79,7 +80,7 @@ class _SemesterState extends State<Semester> {
   }
 
   searchResultsList() {
-    showResults = SplayTreeMap<String,dynamic>();
+    showResults = SplayTreeMap<String, dynamic>();
 
     if (_searchController.text != "") {
       newCourses.forEach((key, value) {
@@ -106,7 +107,7 @@ class _SemesterState extends State<Semester> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+            padding: const EdgeInsets.fromLTRB(75, 20, 75, 20),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(hintText: 'Search'),
@@ -115,18 +116,24 @@ class _SemesterState extends State<Semester> {
           Expanded(
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.05, 20, 0),
+                    0, MediaQuery.of(context).size.height * 0.05, 0, 0),
                 itemCount: sortedResults.length,
                 itemBuilder: (BuildContext context, int index) {
                   String key = sortedResults.keys.elementAt(index);
                   if (key != 'gpa' && key != null) {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
-                      title: Text(courses[key]),
+                      title: Text(
+                        courses[key],
+                        style: TextStyle(fontSize: 15),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(key),
+                          Text(
+                            key,
+                            style: TextStyle(fontSize: 15),
+                          ),
                           Text('${credits[key].toString()} Credits'),
                         ],
                       ),

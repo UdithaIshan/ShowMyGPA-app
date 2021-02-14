@@ -143,7 +143,7 @@ class _HomeState extends State<Home> {
                   child: Text(
                     'Welcome $_index!',
                     style: TextStyle(
-                      fontSize: 23,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                     ),
                   )),
@@ -160,14 +160,14 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.of(context).size.width * .6,
                 circleWidth: 12.0,
                 circleColor: Colors.grey[300],
-                coveredCircleColor: Colors.amber[800],
+                coveredCircleColor: Color.fromRGBO(254, 101, 65, 1),
                 circleHeader: 'GPA',
                 unit: '/4.00',
                 coveredPercentStyle: Theme.of(context)
                     .textTheme
                     .bodyText1
                     .copyWith(
-                        fontSize: 44.0,
+                        fontSize: 41.0,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
                         color: Colors.black87),
@@ -179,7 +179,7 @@ class _HomeState extends State<Home> {
                 children: [
                   Text(
                     _classType,
-                    style: TextStyle(fontSize: 23),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ],
               ),
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Divider(
                   thickness: 1,
-                  color: Colors.amber[800],
+                  color: Color.fromRGBO(255, 91, 53, 1),
                 ),
               ),
               Row(
@@ -199,12 +199,15 @@ class _HomeState extends State<Home> {
                   Container(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: VerticalDivider(
-                        color: Colors.amber[800],
+                        color: Color.fromRGBO(255, 91, 53, 1),
                         thickness: 1,
                       )),
                   RowItem(title: 'Credits', value: totCREDITS.toString()),
                 ],
-              )
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
             ],
           )
         ],
@@ -226,11 +229,11 @@ class RowItem extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 23),
+            style: TextStyle(fontSize: 20),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 17),
           )
         ],
       ),
