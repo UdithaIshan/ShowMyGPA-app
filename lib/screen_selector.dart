@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/views/home_screen.dart';
-import 'package:gpa_analyzer/views/ranking_screen.dart';
+import 'package:gpa_analyzer/views/profile.dart';
 import 'package:gpa_analyzer/views/semester_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
@@ -15,7 +15,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
   List<Widget> _screenContainer = [
     Home(),
     Semester(),
-    Ranking(),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -35,7 +35,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.filter_frames_outlined), label: "Results"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.trending_up), label: "Ranking"),
+                  icon: Icon(Icons.settings), label: "Settings"),
             ],
             currentIndex: _currentIndex,
             selectedItemColor: Color.fromRGBO(254, 101, 65, 1),

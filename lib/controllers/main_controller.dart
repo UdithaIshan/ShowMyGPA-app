@@ -21,6 +21,11 @@ class MainController {
     prefs.setBool('autologin', value);
   }
 
+  Future<void> setUsername(String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', name);
+  }
+
   Future<String> getIndex() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('index');
@@ -40,4 +45,15 @@ class MainController {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('autologin');
   }
+
+  Future<String> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username');
+  }
+
+  void deleteAll() async{
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+}
+
 }
