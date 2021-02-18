@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:circular_custom_loader/circular_custom_loader.dart';
+import '../values.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,19 +12,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   final _processData = ProcessData();
   final _mainController = MainController();
-
-  var _index = 'N/A';
+  var _index;
   var _batch;
   var _dep;
-  Map<String, dynamic> _results;
+  var _username = 'N/A';
+
+  static Map<String, dynamic> resultsOfStudent;
   Map<String, dynamic> _gpvs;
   Map<String, dynamic> _credits;
-  List<QueryDocumentSnapshot> _ranks = [];
   double _gpa;
   int _totCREDITS = 0;
   double _coveredPercent = 0;
@@ -35,19 +34,23 @@ class _HomeState extends State<Home> {
     _index = await _mainController.getIndex();
     _batch = await _mainController.getBatch();
     _dep = await _mainController.getDepartment();
+    _username = await _mainController.getUsername();
 
     await _processData.getResults(_index, _batch, _dep);
 
-    _ranks = _processData.ranks;
+    resultsOfStudent = _processData.results;
+    _gpvs = gpvs;
 
-    _results = _processData.results;
-    _gpvs = _processData.gpvs;
-    _credits = _processData.credits;
+    if(_dep == 'cs') {
+      _credits = creditCs;
+    }
+    else if(_dep == 'is') {
+      _credits = creditIs;
+    }
 
-    if (_results != null && _gpvs != null && _credits != null) {
-      _gpa = getGPA(_results, _gpvs, _credits);
-      _value = getRank(_ranks, _index);
-
+    if (resultsOfStudent != null && _gpvs != null && _credits != null) {
+      _gpa = getGPA(resultsOfStudent, _gpvs, _credits);
+      _value = resultsOfStudent['rank'].toString();
       if (!mounted) {
         return; // Just do nothing if the widget is disposed.
       }
@@ -85,17 +88,17 @@ class _HomeState extends State<Home> {
     return 'N/A';
   }
 
-  String getRank(ranks, index) {
-    int prevNo = 1;
-    for (int i = 0; i <= ranks.length; i++) {
-      int no = i + 1;
-      if (i > 0 && ranks[i].data()['gpa'] == ranks[i - 1].data()['gpa']) {
-        no = prevNo;
-      } else
-        prevNo = no;
-      if (ranks[i].id == index) return no.toString();
-    }
-  }
+  // String getRank(ranks, index) {
+  //   int prevNo = 1;
+  //   for (int i = 0; i <= ranks.length; i++) {
+  //     int no = i + 1;
+  //     if (i > 0 && ranks[i].data()['gpa'] == ranks[i - 1].data()['gpa']) {
+  //       no = prevNo;
+  //     } else
+  //       prevNo = no;
+  //     if (ranks[i].id == index) return no.toString();
+  //   }
+  // }
 
   @override
   void initState() {
@@ -120,7 +123,7 @@ class _HomeState extends State<Home> {
               Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Welcome $_index!',
+                    _username==null?'Welcome $_index!':'Welcome $_username!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,

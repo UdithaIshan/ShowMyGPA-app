@@ -3,6 +3,8 @@ import 'package:gpa_analyzer/controllers/process_data.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'dart:collection';
 
+import 'package:gpa_analyzer/values.dart';
+
 class Semester extends StatefulWidget {
   @override
   _SemesterState createState() => _SemesterState();
@@ -11,8 +13,7 @@ class Semester extends StatefulWidget {
 class _SemesterState extends State<Semester> {
   TextEditingController _searchController = TextEditingController();
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
   final _processData = ProcessData();
   final _mainController = MainController();
@@ -36,19 +37,22 @@ class _SemesterState extends State<Semester> {
     _batch = await _mainController.getBatch();
     _dep = await _mainController.getDepartment();
 
-    await _processData.getCourses(_index, _batch, _dep);
+    await _processData.getResults(_index, _batch, _dep);
     results = _processData.results;
 
     if (results != null) {
       length = results.length;
-      courses = _processData.courses;
-      credits = _processData.credits;
+      if(_dep == 'cs') {
+        courses = csCourses;
+        credits = creditCs;
+      }
+      else if(_dep == 'is') {
+        courses = isCourses;
+        credits = creditIs;
+      }
+
       sortedResults =
           SplayTreeMap<String, dynamic>.from(results, (a, b) => a.compareTo(b));
-      // newS
-      // sortedResults.forEach((key, value) {
-      //
-      // });
 
       sortedResults.forEach((key, value) {
         newCourses[key] = courses[key];
