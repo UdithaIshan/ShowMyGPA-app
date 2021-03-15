@@ -124,7 +124,7 @@ class _SemesterState extends State<Semester> {
                 itemCount: sortedResults.length,
                 itemBuilder: (BuildContext context, int index) {
                   String key = sortedResults.keys.elementAt(index);
-                  if (key != 'gpa' && key != null) {
+                  if (key != 'gpa' && key != null && courses[key] != null) {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(50, 0, 50, 20),
                       title: Text(

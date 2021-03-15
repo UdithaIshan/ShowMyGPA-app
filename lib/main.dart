@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
 import 'package:gpa_analyzer/screen_selector.dart';
 import 'package:gpa_analyzer/welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final _auth = FirebaseAuth.instance;
   var mainController = MainController();
-  bool isLoggedIn = await mainController.getLogin() ?? false;
+  bool isLoggedIn = await mainController.getLogin() == true  &&  _auth.currentUser != null ? true: false;
   runApp(GPAAnalyzer(
     flag: isLoggedIn,
   ));
