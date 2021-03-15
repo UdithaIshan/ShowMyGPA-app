@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
@@ -185,7 +186,9 @@ class _ProfileState extends State<Profile> {
                                           color:
                                               Color.fromRGBO(254, 101, 65, 1))),
                                   onPressed: () {
+                                    final _auth = FirebaseAuth.instance;
                                     _mainController.deleteAll();
+                                    _auth.currentUser.delete();
                                     SystemChannels.platform
                                         .invokeMethod('SystemNavigator.pop');
                                   },
