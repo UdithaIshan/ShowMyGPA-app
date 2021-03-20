@@ -1,16 +1,19 @@
-# gpa_analyzer
+# Show(MyGPA)
 
-A new Flutter application.
+In University, you can't easily get your GPA, rank and results in one place.
+But now you can get all these details by simply entering your index number into Show(MyGPA) app.
 
-## Getting Started
+## You can get
+▶ GPA
+▶ Class
+▶ Rank
+▶ Results for each course
+using the app.
 
-This project is a starting point for a Flutter application.
+## How calculation works
+Rankings are shown according to calculated GPAs.
 
-A few src.blocs.resources to get you started if this is your first Flutter project:
+- [You can see Grade point values(GPV) and GPA calculation formula in the official Undergraduate's Hand Book.](https://ucsc.cmb.ac.lk/downloads/hb_2020.pdf)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Please note
+Show(MyGPA) for the University of Colombo School of Computing undergraduates only. And this is not an official app of UCSC.
