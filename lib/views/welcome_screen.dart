@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:gpa_analyzer/screen_selector.dart';
-import 'controllers/main_controller.dart';
+import './screen_selector.dart';
+import '../controllers/main_controller.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override

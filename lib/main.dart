@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/controllers/main_controller.dart';
-import 'package:gpa_analyzer/screen_selector.dart';
-import 'package:gpa_analyzer/welcome_screen.dart';
+import 'file:///C:/Users/Uditha%20Ishan/AndroidStudioProjects/gpa_analyzer/lib/views/screen_selector.dart';
+import 'file:///C:/Users/Uditha%20Ishan/AndroidStudioProjects/gpa_analyzer/lib/views/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
