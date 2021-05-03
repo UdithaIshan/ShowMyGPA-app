@@ -95,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image(
-                        image: AssetImage('assets/students.png'),
+                        image: AssetImage('assets/images/students.png'),
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       Text(
