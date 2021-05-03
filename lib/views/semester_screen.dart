@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gpa_analyzer/controllers/process_data.dart';
-import 'package:gpa_analyzer/controllers/main_controller.dart';
+import 'package:gpa_analyzer/bloc/data_bloc.dart';
+import 'package:gpa_analyzer/data/data.dart';
 import 'dart:collection';
-
-import 'package:gpa_analyzer/values.dart';
 
 class Semester extends StatefulWidget {
   @override
@@ -13,43 +11,23 @@ class Semester extends StatefulWidget {
 class _SemesterState extends State<Semester> {
   TextEditingController _searchController = TextEditingController();
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
-  final _processData = ProcessData();
-  final _mainController = MainController();
-
-  String _batch;
-  String _dep;
-  String _index;
-  int length = 0;
-  var sortedResults = new SplayTreeMap<String, dynamic>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   Map<String, dynamic> allResults = {};
-  var showResults;
-
   Map<String, dynamic> results = {};
   Map<String, dynamic> courses;
   Map<String, dynamic> newCourses = {};
   Map<String, dynamic> credits;
+  var sortedResults = new SplayTreeMap<String, dynamic>();
+  var showResults;
+  int length = 0;
+
+  DataBloc dataBloc;
 
   Future<Null> getResults() async {
-    _index = await _mainController.getIndex();
-    _batch = await _mainController.getBatch();
-    _dep = await _mainController.getDepartment();
-
-    await _processData.getResults(_index, _batch, _dep);
-    results = _processData.results;
-
     if (results != null) {
       length = results.length;
-      if(_dep == 'cs') {
-        courses = csCourses;
-        credits = creditCs;
-      }
-      else if(_dep == 'is') {
-        courses = isCourses;
-        credits = creditIs;
-      }
 
       sortedResults =
           SplayTreeMap<String, dynamic>.from(results, (a, b) => a.compareTo(b));
@@ -64,16 +42,25 @@ class _SemesterState extends State<Semester> {
     }
   }
 
+  void setData(Data data) {
+    results = data.results;
+    courses = data.courses;
+    credits = data.credits;
+    getResults();
+  }
+
   @override
   void initState() {
-    super.initState();
+    dataBloc = DataBloc();
+    dataBloc.data.listen((data) => setData(data));
     _searchController.addListener(_onSearchChanged);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
+    super.initState();
   }
 
   @override
   void dispose() {
+    dataBloc.dispose();
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
@@ -107,7 +94,9 @@ class _SemesterState extends State<Semester> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
-      onRefresh: getResults,
+      onRefresh: () async {
+        await getResults();
+      },
       child: Column(
         children: [
           Padding(
