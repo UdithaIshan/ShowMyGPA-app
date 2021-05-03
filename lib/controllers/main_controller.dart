@@ -51,9 +51,8 @@ class MainController {
     return prefs.getString('username');
   }
 
-  void deleteAll() async{
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  await preferences.clear();
-}
-
+  void deleteAll() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
 }
