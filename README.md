@@ -17,3 +17,6 @@ Rankings are shown according to calculated GPAs.
 
 ## Please note
 Show(MyGPA) for the University of Colombo School of Computing undergraduates only. And this is not an official app of UCSC.
+
+Circular_custom_loader
+Line 131: Text('${coveredPercent/25}',
