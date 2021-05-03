@@ -1,22 +1,25 @@
-# Show(MyGPA)
+<h1 align="center"><a href="https://play.google.com/store/apps/details?id=com.devstream.showmygpa">Show(MyGPA)</a></h1>
+<p align="center"><a href='https://play.google.com/store/apps/details?id=com.devstream.showmygpa'><img height='240' src='https://github.com/UdithaIshan/ShowMyGPA-app/blob/main/screenshots/github_logo.png'/></a></p>
 
-In University, you can't easily get your GPA, rank and results in one place.
-But now you can get all these details by simply entering your index number into Show(MyGPA) app.
+<br>
+In University, you can't easily get your GPA, rank and results in one place. 
+But now you can get all these details by simply entering your index number into the Show(MyGPA) app.
 
-## You can get
-▶ GPA
-▶ Class
-▶ Rank
-▶ Results for each course
-using the app.
+## Features
+-  Automatcally calculates
+ - GPA
+ - Class
+ - Rank
+ - Results for each course
 
-## How calculation works
-Rankings are shown according to calculated GPAs.
+<p align="center"><a href='https://play.google.com/store/apps/details?id=com.devstream.showmygpa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height='80' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a></p>
 
-- [You can see Grade point values(GPV) and GPA calculation formula in the official Undergraduate's Hand Book.](https://ucsc.cmb.ac.lk/downloads/hb_2020.pdf)
+## Screenshots
+<img src="https://github.com/UdithaIshan/ShowMyGPA-app/blob/main/screenshots/app_screens.png" />
 
-## Please note
-Show(MyGPA) for the University of Colombo School of Computing undergraduates only. And this is not an official app of UCSC.
+## Acknowledgement
+Show(MyGPA) works for the University of Colombo School of Computing undergraduates only. And this is **not** an official app of the UCSC.
 
-Circular_custom_loader
-Line 131: Text('${coveredPercent/25}',
+## License
+
+[GNU General Public License v3](https://github.com/UdithaIshan/ShowMyGPA-app/blob/main/LICENSE)
