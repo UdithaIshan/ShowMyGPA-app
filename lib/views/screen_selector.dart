@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpa_analyzer/views/home_screen.dart';
-import 'package:gpa_analyzer/views/profile.dart';
+import 'package:gpa_analyzer/views/profile_screen.dart';
 import 'package:gpa_analyzer/views/semester_screen.dart';
 
 class ScreenSelector extends StatefulWidget {
