@@ -12,9 +12,6 @@ But now you can get all these details by simply entering your index number into 
  - Rank
  - Results for each course
 
-------------
-
-
 <p align="center"><a href='https://play.google.com/store/apps/details?id=com.devstream.showmygpa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height='80' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a></p>
 
 ## Screenshots
