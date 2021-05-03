@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../values.dart';
+import 'values.dart';
 import 'data.dart';
 
 class DataDb {
