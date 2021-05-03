@@ -20,7 +20,7 @@ But now you can get all these details by simply entering your index number into 
 ## Screenshots
 <img src="https://github.com/UdithaIshan/ShowMyGPA-app/blob/main/screenshots/app_screens.png" />
 
-## Acknowledgements
+## Acknowledgement
 Show(MyGPA) works for the University of Colombo School of Computing undergraduates only. And this is **not** an official app of the UCSC.
 
 ## License
