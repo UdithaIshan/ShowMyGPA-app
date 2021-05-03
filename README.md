@@ -22,4 +22,4 @@ Show(MyGPA) works for the University of Colombo School of Computing undergraduat
 
 ## License
 
-GNU General Public License v3
+[GNU General Public License v3](https://github.com/UdithaIshan/ShowMyGPA-app/blob/main/LICENSE)
