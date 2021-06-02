@@ -131,7 +131,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           hintText: "My index number is...",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.red, //this has no effect
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(254, 101, 65, 1),
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -157,7 +162,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           hintText: "I'm in ...",
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.red, //this has no effect
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(254, 101, 65, 1),
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
